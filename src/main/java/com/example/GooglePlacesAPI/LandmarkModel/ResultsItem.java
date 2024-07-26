@@ -1,4 +1,4 @@
-package com.example.GooglePlacesAPI.Entities;
+package com.example.GooglePlacesAPI.LandmarkModel;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
