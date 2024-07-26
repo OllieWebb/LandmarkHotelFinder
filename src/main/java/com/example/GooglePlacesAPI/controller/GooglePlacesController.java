@@ -1,7 +1,10 @@
 package com.example.GooglePlacesAPI.controller;
 
+import com.example.GooglePlacesAPI.Entities.LandmarkResponse;
+import com.example.GooglePlacesAPI.Services.GooglePlacesService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+
 @RestController
 public class GooglePlacesController {
 
     @Value("${google.places.api.key}")
     private String apiKey;
+
+    private GooglePlacesService googlePlacesService;
 
     @Operation(summary = "Get places based on location and radius")
     @GetMapping("/landmarks")
@@ -36,6 +43,20 @@ public class GooglePlacesController {
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + location + "&radius=" + radius + "&type=hotel&key="+apiKey;
         //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
         RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url, String.class);
+    }
+
+
+
+    @Operation(summary = "Get places based on location and radius")
+    @GetMapping("/testing")
+    public String getLandmark(
+            @Parameter(description = "text for searching") @RequestParam String text
+    ) throws IOException {
+        String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + text + "&key="+apiKey;
+        RestTemplate restTemplate = new RestTemplate();
+        String jsonResponse = restTemplate.getForObject(url, String.class);
+        System.out.println("jsonResponse: " + jsonResponse);
         return restTemplate.getForObject(url, String.class);
     }
 
