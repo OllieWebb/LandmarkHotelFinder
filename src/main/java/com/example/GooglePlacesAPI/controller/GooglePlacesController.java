@@ -5,12 +5,18 @@ import com.example.GooglePlacesAPI.Services.GooglePlacesService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @RestController
 public class GooglePlacesController {
@@ -32,13 +38,28 @@ public class GooglePlacesController {
 
         LandmarkResponse landmarkResponse = googlePlacesService.parseLandmarkResponse(jsonResponseLandmark);
 
-        double lat = landmarkResponse.getResults().getFirst().getGeometry().getLocation().getLat();
-        double lng = landmarkResponse.getResults().getFirst().getGeometry().getLocation().getLng();
+        double lat = landmarkResponse.getResults().get(0).getGeometry().getLocation().getLat();
+        double lng = landmarkResponse.getResults().get(0).getGeometry().getLocation().getLng();
 
-        String location = lat+","+lng;
-        String urlHotel = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + location + "&radius=" + radius + "&type=hotel&key="+apiKey;
+        String urlHotel = "https://places.googleapis.com/v1/places:searchNearby?fields=*";
+
+        // Create request body
+        String requestBody = String.format(
+                "{\"includedTypes\": [\"restaurant\"], \"locationRestriction\": {\"circle\": {\"center\": {\"latitude\": %f, \"longitude\": %f}, \"radius\": %d}}}",
+                lat, lng, radius
+        );
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("Authorization", "Bearer " + apiKey);
+
+        // Create entity with headers and body
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         RestTemplate restTemplateHotel = new RestTemplate();
-        return restTemplateHotel.getForObject(urlHotel, String.class);
+        ResponseEntity<String> response = restTemplateHotel.exchange(urlHotel, HttpMethod.POST, entity, String.class);
+        return response.getBody();
     }
 }
