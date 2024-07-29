@@ -2,6 +2,8 @@
 
 ## Contents
 
+- [Continuous Integration Workflow](#continuous-integration-workflow)
+
 ## Continuous Integration Workflow
 
 Our project includes a GitHub Actions workflow designed to automate the build and test process whenever a pull request is made to the main branch. This workflow is defined in the `.github/workflows/build-and-test.yml` file.
