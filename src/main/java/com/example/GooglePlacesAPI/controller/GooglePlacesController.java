@@ -21,9 +21,7 @@ public class GooglePlacesController {
             @RequestParam String text,
             @RequestParam int radius
     ) throws IOException {
-
         LandmarkResponse landmarkResponse = googlePlacesService.getLandmarks(text);
-
         if (landmarkResponse.getResults().isEmpty()) {
             return "No results found.";
         }
