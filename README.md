@@ -21,7 +21,7 @@ Endpoints to manage user reviews and ratings for hotels and landmarks. This feat
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/landmark-hotel-association-api.git
+   
 
 ### Running
 2. Run the program and use the Swagger UI to interact with the API:
