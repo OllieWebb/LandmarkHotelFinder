@@ -2,6 +2,7 @@ package com.example.GooglePlacesAPI.Services;
 
 import com.example.GooglePlacesAPI.HotelsModel.HotelResponse;
 import com.example.GooglePlacesAPI.LandmarkModel.LandmarkResponse;
+import com.example.GooglePlacesAPI.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -24,7 +25,7 @@ public class GooglePlacesService {
     public LandmarkResponse getLandmarks(String text) throws IOException {
         String urlLandmark = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + text + "&key=" + apiKey;
         String jsonResponseLandmark = restTemplate.getForObject(urlLandmark, String.class);
-        return parseLandmarkResponse(jsonResponseLandmark);
+        return Utils.parseLandmarkResponse(jsonResponseLandmark);
     }
 
     public String getNearbyHotels(double lat, double lng, int radius) throws IOException {
@@ -48,10 +49,6 @@ public class GooglePlacesService {
         } catch (HttpClientErrorException e) {
             throw e;
         }
-    }
-
-    private LandmarkResponse parseLandmarkResponse(String jsonResponse) throws IOException {
-        return objectMapper.readValue(jsonResponse, LandmarkResponse.class);
     }
 
     private HotelResponse parseHotelResponse(String jsonResponse) throws IOException {
