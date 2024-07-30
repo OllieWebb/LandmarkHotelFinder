@@ -1,6 +1,8 @@
 package com.example.GooglePlacesAPI.Services;
 
-import com.example.GooglePlacesAPI.HotelsModel.HotelResponse;
+import com.example.GooglePlacesAPI.Hotel.HotelResponse;
+import com.example.GooglePlacesAPI.Hotel.PlacesItem;
+import com.example.GooglePlacesAPI.HotelsModel.ResultsItem;
 import com.example.GooglePlacesAPI.LandmarkModel.LandmarkResponse;
 import com.example.GooglePlacesAPI.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +13,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class GooglePlacesService {
@@ -49,6 +53,22 @@ public class GooglePlacesService {
         } catch (HttpClientErrorException e) {
             throw e;
         }
+    }
+
+    public List<String> getNearbyHotelNames(double lat, double lng, int radius) throws IOException {
+        String jsonResponse = getNearbyHotels(lat, lng, radius);
+        List<String> hotelNames = new ArrayList<>();
+
+        try {
+            HotelResponse hotelResponse = parseHotelResponse(jsonResponse);
+            for (PlacesItem hotel : hotelResponse.getPlaces()) {
+                hotelNames.add(hotel.getDisplayName().getText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return hotelNames;
     }
 
     private HotelResponse parseHotelResponse(String jsonResponse) throws IOException {
