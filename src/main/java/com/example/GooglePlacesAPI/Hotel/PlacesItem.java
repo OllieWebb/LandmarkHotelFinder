@@ -3,10 +3,7 @@ package com.example.GooglePlacesAPI.Hotel;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Places{
-
-	@JsonProperty("websiteUri")
-	private String websiteUri;
+public class PlacesItem{
 
 	@JsonProperty("formattedAddress")
 	private String formattedAddress;
@@ -20,12 +17,11 @@ public class Places{
 	@JsonProperty("rating")
 	private double rating;
 
+	@JsonProperty("websiteUri")
+	private String websiteUri;
+
 	@JsonProperty("internationalPhoneNumber")
 	private String internationalPhoneNumber;
-
-	public String getWebsiteUri(){
-		return websiteUri;
-	}
 
 	public String getFormattedAddress(){
 		return formattedAddress;
@@ -41,6 +37,10 @@ public class Places{
 
 	public double getRating(){
 		return rating;
+	}
+
+	public String getWebsiteUri(){
+		return websiteUri;
 	}
 
 	public String getInternationalPhoneNumber(){
