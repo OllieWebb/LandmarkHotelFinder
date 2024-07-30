@@ -38,11 +38,16 @@ public class LandmarkHotelAssociationStepDefs {
 
     @Then("I should receive a list of hotels")
     public void iShouldReceiveAListOfHotels() throws IOException {
-        assertThat(Utils.parseLandmarkResponse(sharedState.response.getBody().asString()).getResults(),not(empty()));
+        assertThat(Utils.parseHotelResponse(sharedState.response.getBody().asString()).getPlaces(),not(empty()));
     }
 
     @And("each hotel should include the name, rating, website URL, reviews, phone number, and address")
     public void eachHotelShouldIncludeTheNameRatingWebsiteURLReviewsPhoneNumberAndAddress() throws IOException {
-        assertThat(Utils.parseLandmarkResponse(sharedState.response.getBody().asString()).getResults().getFirst().getName(),notNullValue());
+        assertThat(Utils.parseHotelResponse(sharedState.response.getBody().asString()).getPlaces().getFirst().getDisplayName(),notNullValue());
+    }
+
+    @Then("I should receive an empty list")
+    public void iShouldReceiveAnEmptyList() throws IOException {
+        assertThat(Utils.parseHotelResponse(sharedState.response.getBody().asString()).getPlaces(),nullValue());
     }
 }
