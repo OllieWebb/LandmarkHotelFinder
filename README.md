@@ -16,14 +16,6 @@ An endpoint providing valuable insights, such as popular booking periods, averag
 ### 4. User Reviews and Ratings
 Endpoints to manage user reviews and ratings for hotels and landmarks. This feature allows users to share their experiences and provide feedback, enhancing the decision-making process for future travelers.
 
-## Security Features
-
-To ensure the security of our users and their data, the following security measures have been implemented:
-
-- **Authentication**: Secure user authentication is achieved using OAuth 2.0 or JWT (JSON Web Tokens). This ensures that only authorized users can access the API endpoints.
-- **Authorization**: Proper authorization checks are in place to prevent unauthorized access to endpoints. This guarantees that users can only access resources they are permitted to.
-- **Data Protection**: Measures are implemented to protect sensitive data, ensuring confidentiality and integrity of user information.
-
 ## Getting Started
 
 ### Installation
