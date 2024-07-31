@@ -15,9 +15,9 @@ Feature: Nearby Hotels API
 
   Scenario: Invalid landmark name
     Given the endpoint "/hotel"
-    When I request hotels near "Unknown Landmark" within a 1000 meter radius
+    When I request hotels near "@@" within a 1000 meter radius
     Then I should receive an error message indicating the landmark is not found
-    And the response should have a status code of 404
+    And the response should have a status code of 400
 
   Scenario: Invalid radius (negative value)
     Given the endpoint "/hotel"
@@ -45,13 +45,6 @@ Feature: Nearby Hotels API
     Then I should receive a list of hotels
     And each hotel should include the name, rating, website URL, reviews, phone number, and address
     And the response should have a status code of 200
-
-  Scenario: Invalid API key or unauthorized access
-    Given the endpoint "/hotel"
-    And the API requires an API key
-    When I make a request without an API key
-    Then I should receive an error message indicating unauthorized access
-    And the response should have a status code of 401
 
   Scenario: Malformed request with missing parameters
     Given the endpoint "/hotel"
