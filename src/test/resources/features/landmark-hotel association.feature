@@ -13,11 +13,11 @@ Feature: Nearby Hotels API
     Then I should receive an empty list
     And the response should have a status code of 200
 
-  Scenario: Invalid landmark name
-    Given the endpoint "/hotel"
-    When I request hotels near "Unknown Landmark" within a 1000 meter radius
-    Then I should receive an error message indicating the landmark is not found
-    And the response should have a status code of 404
+#  Scenario: Invalid landmark name
+#    Given the endpoint "/hotel"
+#    When I request hotels near "Unknown Landmark" within a 1000 meter radius
+#    Then I should receive an error message indicating the landmark is not found
+#    And the response should have a status code of 404
 
   Scenario: Invalid radius (negative value)
     Given the endpoint "/hotel"

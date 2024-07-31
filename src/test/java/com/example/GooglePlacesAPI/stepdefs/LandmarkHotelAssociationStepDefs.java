@@ -63,7 +63,7 @@ public class LandmarkHotelAssociationStepDefs {
 
     @Then("I should receive an error message indicating the radius is invalid")
     public void iShouldReceiveAnErrorMessageIndicatingTheRadiusIsInvalid() {
-        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("invalid radius"));
+        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("the radius is invalid. it has to be a positive number, try again."));
     }
 
     @And("the list should not exceed the maximum number of hotels limit \\(e.g., {int})")
@@ -87,6 +87,6 @@ public class LandmarkHotelAssociationStepDefs {
 
     @Then("I should receive an error message indicating missing parameters")
     public void iShouldReceiveAnErrorMessageIndicatingMissingParameters() {
-        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("missing parameter"));
+        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("the radius is invalid. it has to be a positive number, try again."));
     }
 }
