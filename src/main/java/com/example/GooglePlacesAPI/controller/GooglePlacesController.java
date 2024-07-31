@@ -5,6 +5,7 @@ import com.example.GooglePlacesAPI.Services.GooglePlacesService;
 import com.example.GooglePlacesAPI.Services.SeleniumService;
 import com.example.GooglePlacesAPI.exceptions.InvalidLandmarkException;
 import com.example.GooglePlacesAPI.exceptions.InvalidRadiusException;
+import com.example.GooglePlacesAPI.exceptions.NoResultsFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class GooglePlacesController {
     public String getHotels(
             @RequestParam String text,
             @RequestParam(required = false) Integer radius
-    ) throws IOException, InvalidRadiusException, InvalidLandmarkException {
+    ) throws IOException, InvalidRadiusException, InvalidLandmarkException, NoResultsFoundException {
         if(!googlePlacesService.isValidLandmark(text)){
             throw new InvalidLandmarkException();
         }
@@ -39,8 +40,8 @@ public class GooglePlacesController {
             throw new InvalidRadiusException();
         }
         LandmarkResponse landmarkResponse = googlePlacesService.getLandmarks(text);
-        if (landmarkResponse.getResults().isEmpty() || landmarkResponse.getResults().size() == 2) {
-            return "No results found.";
+        if (landmarkResponse.getResults().isEmpty() || landmarkResponse.getResults().size() == 3) {
+            throw new NoResultsFoundException();
         }
 
         double lat = landmarkResponse.getResults().get(0).getGeometry().getLocation().getLat();

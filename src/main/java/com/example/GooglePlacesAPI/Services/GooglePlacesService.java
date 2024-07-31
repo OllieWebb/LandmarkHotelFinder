@@ -5,6 +5,7 @@ import com.example.GooglePlacesAPI.Hotel.PlacesItem;
 import com.example.GooglePlacesAPI.HotelsModel.ResultsItem;
 import com.example.GooglePlacesAPI.LandmarkModel.LandmarkResponse;
 import com.example.GooglePlacesAPI.Utils;
+import com.example.GooglePlacesAPI.exceptions.NoResultsFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -49,9 +50,14 @@ public class GooglePlacesService {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(urlNearbySearch, HttpMethod.POST, entity, String.class);
+            if(response.getBody().length() == 3){       //Give response if '{}' is returned.
+                throw new NoResultsFoundException();
+            }
             return response.getBody();
         } catch (HttpClientErrorException e) {
             throw e;
+        } catch (NoResultsFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

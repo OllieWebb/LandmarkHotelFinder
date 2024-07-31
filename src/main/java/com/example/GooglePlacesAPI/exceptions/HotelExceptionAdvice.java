@@ -17,4 +17,9 @@ public class HotelExceptionAdvice {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoResultsFoundException.class)
+    public ResponseEntity<String> noResultsFound(NoResultsFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
