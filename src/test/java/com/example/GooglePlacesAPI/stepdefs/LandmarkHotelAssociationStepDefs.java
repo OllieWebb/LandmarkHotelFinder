@@ -58,7 +58,7 @@ public class LandmarkHotelAssociationStepDefs {
 
     @Then("I should receive an error message indicating the landmark is not found")
     public void iShouldReceiveAnErrorMessageIndicatingTheLandmarkIsNotFound() {
-        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("no results found"));
+        assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("invalid landmark. please input valid characters and without leading spaces"));
     }
 
     @Then("I should receive an error message indicating the radius is invalid")
