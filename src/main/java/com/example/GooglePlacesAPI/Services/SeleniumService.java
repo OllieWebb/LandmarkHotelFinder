@@ -27,13 +27,16 @@ public class SeleniumService {
     }
 
     public Map<String, Boolean> getHotelAvailability(String hotelName, String checkInDate, String checkOutDate) {
-
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         Map<String, Boolean> availabilityMap = new HashMap<>();
         try {
             // Open the website to search for hotels
             driver.get("https://www.booking.com/");
+
+            // Decline cookies when loaded in
+            WebElement declineCookiesButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("onetrust-reject-all-handler")));
+            declineCookiesButton.click();
 
             // Wait for the search input to be present and enter the location
             WebElement searchInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(":rh:")));
