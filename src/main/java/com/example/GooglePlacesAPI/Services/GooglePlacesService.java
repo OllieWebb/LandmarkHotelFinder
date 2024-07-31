@@ -1,6 +1,8 @@
 package com.example.GooglePlacesAPI.Services;
 
-import com.example.GooglePlacesAPI.HotelsModel.HotelResponse;
+import com.example.GooglePlacesAPI.Hotel.HotelResponse;
+import com.example.GooglePlacesAPI.Hotel.PlacesItem;
+import com.example.GooglePlacesAPI.HotelsModel.ResultsItem;
 import com.example.GooglePlacesAPI.LandmarkModel.LandmarkResponse;
 import com.example.GooglePlacesAPI.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +13,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class GooglePlacesService {
@@ -51,7 +55,43 @@ public class GooglePlacesService {
         }
     }
 
+    public List<String> getNearbyHotelNames(double lat, double lng, int radius) throws IOException {
+        String jsonResponse = getNearbyHotels(lat, lng, radius);
+        List<String> hotelNames = new ArrayList<>();
+
+        try {
+            HotelResponse hotelResponse = parseHotelResponse(jsonResponse);
+            for (PlacesItem hotel : hotelResponse.getPlaces()) {
+                hotelNames.add(hotel.getDisplayName().getText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return hotelNames;
+    }
+
     private HotelResponse parseHotelResponse(String jsonResponse) throws IOException {
         return objectMapper.readValue(jsonResponse, HotelResponse.class);
+    }
+    public boolean isValidLandmark(String landmark){
+        if (landmark == null || landmark.isEmpty()) {
+            return false;
+        }
+        if (!landmark.trim().equals(landmark)) {
+            return false;
+        }
+        for (char c : landmark.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isSpaceChar(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isValidRadius(Integer radius) {
+        if (radius == null) {
+            return false;
+        }
+        return radius > 0;
     }
 }
