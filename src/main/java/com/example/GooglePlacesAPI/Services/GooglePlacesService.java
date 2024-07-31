@@ -74,4 +74,24 @@ public class GooglePlacesService {
     private HotelResponse parseHotelResponse(String jsonResponse) throws IOException {
         return objectMapper.readValue(jsonResponse, HotelResponse.class);
     }
+    public boolean isValidLandmark(String landmark){
+        if (landmark == null || landmark.isEmpty()) {
+            return false;
+        }
+        if (!landmark.trim().equals(landmark)) {
+            return false;
+        }
+        for (char c : landmark.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isSpaceChar(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isValidRadius(Integer radius) {
+        if (radius == null) {
+            return false;
+        }
+        return radius > 0;
+    }
 }
