@@ -5,6 +5,7 @@ import com.example.GooglePlacesAPI.Hotel.PlacesItem;
 import com.example.GooglePlacesAPI.HotelsModel.ResultsItem;
 import com.example.GooglePlacesAPI.LandmarkModel.LandmarkResponse;
 import com.example.GooglePlacesAPI.Utils;
+import com.example.GooglePlacesAPI.exceptions.NoResultsFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -49,9 +50,14 @@ public class GooglePlacesService {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(urlNearbySearch, HttpMethod.POST, entity, String.class);
+            if(response.getBody().length() == 3){       //Give response if '{}' is returned.
+                throw new NoResultsFoundException();
+            }
             return response.getBody();
         } catch (HttpClientErrorException e) {
             throw e;
+        } catch (NoResultsFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -73,5 +79,25 @@ public class GooglePlacesService {
 
     private HotelResponse parseHotelResponse(String jsonResponse) throws IOException {
         return objectMapper.readValue(jsonResponse, HotelResponse.class);
+    }
+    public boolean isValidLandmark(String landmark){
+        if (landmark == null || landmark.isEmpty()) {
+            return false;
+        }
+        if (!landmark.trim().equals(landmark)) {
+            return false;
+        }
+        for (char c : landmark.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isSpaceChar(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isValidRadius(Integer radius) {
+        if (radius == null) {
+            return false;
+        }
+        return radius > 0;
     }
 }
