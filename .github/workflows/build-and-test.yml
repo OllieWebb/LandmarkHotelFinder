@@ -35,9 +35,12 @@ jobs:
           # Download the ChromeDriver for Linux
           curl -sSL "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" -o chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
-          mkdir -p src/main/resources
+          # Ensure the chromedriver is placed correctly
           mv chromedriver-linux64/chromedriver src/main/resources/chromedriver
           chmod +x src/main/resources/chromedriver
+
+      - name: Verify ChromeDriver exists
+        run: ls -la src/main/resources/chromedriver
 
       - name: Build without tests
         run: mvn -B clean install -DskipTests
@@ -52,3 +55,6 @@ jobs:
 
       - name: Run tests with Maven
         run: mvn -B verify
+
+      # - name: Stop GooglePlacesApiApplication
+      #   run: pkill -f 'java -jar target/*.jar'
