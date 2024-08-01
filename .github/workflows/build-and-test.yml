@@ -35,8 +35,8 @@ jobs:
           # Extract the major version number (e.g., 126 from 126.0.6478.182)
           CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d. -f1)
           echo "Chrome major version: $CHROME_MAJOR_VERSION"
-          # Fetch the ChromeDriver version corresponding to this Chrome version
-          CHROMEDRIVER_VERSION=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" | jq -r --arg MAJOR "$CHROME_MAJOR_VERSION" '.versions[] | select(.version | startswith($MAJOR)) | .version')
+          # Fetch the latest ChromeDriver version corresponding to this Chrome version
+          CHROMEDRIVER_VERSION=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" | jq -r --arg MAJOR "$CHROME_MAJOR_VERSION" '.versions[] | select(.version | startswith($MAJOR)) | .version' | sort -rV | head -n 1)
           echo "Matching ChromeDriver version: $CHROMEDRIVER_VERSION"
           # Download the ChromeDriver for Linux
           curl -sSL "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" -o chromedriver_linux64.zip
