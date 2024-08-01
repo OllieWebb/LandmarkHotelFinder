@@ -16,14 +16,24 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-
 @Service
 public class SeleniumService {
 
     static {
+        // Determine the operating system
+        String os = System.getProperty("os.name").toLowerCase();
+        String driverPath;
+
+        if (os.contains("win")) {
+            driverPath = "src/main/resources/chromedriver.exe";
+        } else if (os.contains("mac")) {
+            driverPath = "src/main/resources/chromedriver-mac-x64/chromedriver";
+        } else {
+            driverPath = "src/main/resources/chromedriver";
+        }
+
         // Set the path to the ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", driverPath);
     }
 
     public Map<String, Boolean> getHotelAvailability(String hotelName, String checkInDate, String checkOutDate) {

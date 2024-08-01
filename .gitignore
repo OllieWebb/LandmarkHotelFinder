@@ -32,5 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+THIRD_PARTY_NOTICES.chronmedriver
 LICENSE.chromedriver
 chromedriver.exe
+chromedriver
+chromedriver-mac-x64
