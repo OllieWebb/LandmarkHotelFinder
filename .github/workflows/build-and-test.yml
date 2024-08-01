@@ -40,10 +40,12 @@ jobs:
           echo "Matching ChromeDriver version: $CHROMEDRIVER_VERSION"
           # Download the ChromeDriver for Linux
           curl -sSL "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" -o chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          mkdir -p src/main/resources/chromedriver-linux64
-          mv chromedriver-linux64/chromedriver src/main/resources/chromedriver-linux64/chromedriver
-          chmod +x src/main/resources/chromedriver-linux64/chromedriver
+          unzip chromedriver_linux64.zip -d chromedriver_linux64
+          # Ensure the ChromeDriver is moved to the correct location
+          mkdir -p src/main/resources
+          mv chromedriver_linux64/chromedriver-linux64/chromedriver src/main/resources/chromedriver
+          chmod +x src/main/resources/chromedriver
+
 
 
       - name: Verify ChromeDriver exists
