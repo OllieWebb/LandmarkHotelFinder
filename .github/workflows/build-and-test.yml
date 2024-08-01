@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +20,14 @@ jobs:
           java-version: "22"
           distribution: "adopt"
 
-      - name: Build and test with Maven
+      - name: Build with Maven
+        run: mvn -B clean install
+
+      - name: Start GooglePlacesApiApplication
+        run: nohup java -jar target/*.jar &
+
+      - name: Run tests with Maven
         run: mvn -B verify
+
+      - name: Stop GooglePlacesApiApplication
+        run: pkill -f 'java -jar target/*.jar'
