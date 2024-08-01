@@ -30,7 +30,7 @@ public class SeleniumService {
         } else if (os.contains("mac")) {
             driverPath = "src/main/resources/chromedriver-mac-x64/chromedriver";
         } else {
-            driverPath = "src/main/resources/chromedriver-linux64/chromedriver";
+            driverPath = "src/main/resources/chromedriver";
         }
 
         // Set the path to the ChromeDriver executable
