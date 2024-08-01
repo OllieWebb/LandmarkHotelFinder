@@ -35,5 +35,10 @@ build/
 THIRD_PARTY_NOTICES.chronmedriver
 LICENSE.chromedriver
 chromedriver.exe
+
 chromedriver
 chromedriver-mac-x64
+
+
+*.properties
+
