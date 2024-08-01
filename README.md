@@ -10,10 +10,7 @@ Endpoints to retrieve hotels near a given landmark based on proximity and availa
 ### 2. Availability Check
 An endpoint to check hotel availability near a specified landmark for a given date range. This functionality allows users to plan their stays by ensuring room availability before making a booking.
 
-### 3. Booking Insights
-An endpoint providing valuable insights, such as popular booking periods, average prices near landmarks, and other trends. This data aids in understanding booking behaviors and optimizing pricing strategies.
-
-### 4. User Reviews and Ratings
+### 3. User Reviews and Ratings
 Endpoints to manage user reviews and ratings for hotels and landmarks. This feature allows users to share their experiences and provide feedback, enhancing the decision-making process for future travelers.
 
 ## Getting Started
