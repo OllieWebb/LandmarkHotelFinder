@@ -23,6 +23,13 @@ jobs:
       - name: Build without tests
         run: mvn -B clean install -DskipTests
 
+      - name: Create application.properties file
+        run: |
+          mkdir -p src/main/resources
+          echo "logging.level.org.springframework.web=DEBUG" > src/main/resources/application.properties
+          echo "spring.application.name=GooglePlacesAPI" >> src/main/resources/application.properties
+          echo "google.places.api.key=${{ secrets.X_GOOG_API_KEY }}" >> src/main/resources/application.properties
+
       - name: Start GooglePlacesApiApplication
         run: nohup java -jar target/*.jar &
 
