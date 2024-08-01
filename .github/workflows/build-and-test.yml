@@ -27,17 +27,24 @@ jobs:
           echo "spring.application.name=GooglePlacesAPI" >> src/main/resources/application.properties
           echo "google.places.api.key=${{ secrets.X_GOOG_API_KEY }}" >> src/main/resources/application.properties
 
-      - name: Download ChromeDriver
+      - name: Download matching ChromeDriver
         run: |
-          # Fetch the latest stable version of ChromeDriver
-          CHROMEDRIVER_VERSION=$(curl -sSL https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq -r '.channels.Stable.version')
-          echo "Latest ChromeDriver version: $CHROMEDRIVER_VERSION"
+          # Get the Chrome version installed on the system
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          echo "Installed Chrome version: $CHROME_VERSION"
+          # Extract the major version number (e.g., 126 from 126.0.6478.182)
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d. -f1)
+          echo "Chrome major version: $CHROME_MAJOR_VERSION"
+          # Fetch the ChromeDriver version corresponding to this Chrome version
+          CHROMEDRIVER_VERSION=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" | jq -r --arg MAJOR "$CHROME_MAJOR_VERSION" '.versions[] | select(.version | startswith($MAJOR)) | .version')
+          echo "Matching ChromeDriver version: $CHROMEDRIVER_VERSION"
           # Download the ChromeDriver for Linux
           curl -sSL "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" -o chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
-          # Ensure the chromedriver is placed correctly
-          mv chromedriver-linux64/chromedriver src/main/resources/chromedriver
-          chmod +x src/main/resources/chromedriver
+          mkdir -p src/main/resources/chromedriver-linux64
+          mv chromedriver-linux64/chromedriver src/main/resources/chromedriver-linux64/chromedriver
+          chmod +x src/main/resources/chromedriver-linux64/chromedriver
+
 
       - name: Verify ChromeDriver exists
         run: ls -la src/main/resources/chromedriver
