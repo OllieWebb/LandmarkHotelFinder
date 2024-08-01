@@ -29,12 +29,14 @@ jobs:
 
       - name: Download ChromeDriver
         run: |
-          CHROMEDRIVER_VERSION=$(curl -sSL https://googlechromelabs.github.io/chrome-for-testing/ | grep -oP '(?<=/chrome-driver/)[^/]+(?=\.zip)' | head -1)
+          # Fetch the latest stable version of ChromeDriver
+          CHROMEDRIVER_VERSION=$(curl -sSL https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq -r '.channels.Stable.version')
           echo "Latest ChromeDriver version: $CHROMEDRIVER_VERSION"
-          curl -sSL "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" -o chromedriver_linux64.zip
+          # Download the ChromeDriver for Linux
+          curl -sSL "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" -o chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           mkdir -p src/main/resources
-          mv chromedriver src/main/resources/chromedriver
+          mv chromedriver-linux64/chromedriver src/main/resources/chromedriver
           chmod +x src/main/resources/chromedriver
 
       - name: Build without tests
