@@ -30,6 +30,9 @@ jobs:
           echo "spring.application.name=GooglePlacesAPI" >> src/main/resources/application.properties
           echo "google.places.api.key=${{ secrets.X_GOOG_API_KEY }}" >> src/main/resources/application.properties
 
+      - name: Verify application.properties
+        run: cat src/main/resources/application.properties
+
       - name: Start GooglePlacesApiApplication
         run: nohup java -jar target/*.jar &
 
