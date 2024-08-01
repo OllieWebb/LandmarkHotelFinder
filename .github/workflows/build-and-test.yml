@@ -20,11 +20,16 @@ jobs:
           java-version: "22"
           distribution: "adopt"
 
-      - name: Build with Maven
-        run: mvn -B clean install
+      - name: Build without tests
+        run: mvn -B clean install -DskipTests
 
       - name: Start GooglePlacesApiApplication
         run: nohup java -jar target/*.jar &
+
+      - name: Wait for application to start
+        run: |
+          echo "Waiting for application to start..."
+          sleep 30 # Adjust the sleep duration based on your application's startup time
 
       - name: Run tests with Maven
         run: mvn -B verify
