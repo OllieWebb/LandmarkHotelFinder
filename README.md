@@ -21,13 +21,25 @@ Endpoints to manage user reviews and ratings for hotels and landmarks. This feat
 ### Installation
 1. Clone the repository:
    ```bash
-   https://github.com/OllieWebb/LandmarkHotelFinder.git
+   git clone https://github.com/OllieWebb/LandmarkHotelFinder.git
+   ```
+
+2. Update Chrome and download the latest ChromeDriver from [here](https://googlechromelabs.github.io/chrome-for-testing/).
+   Unzip the download and place the file `chromedriver.exe` in `/src/main/resources`
+3. Create a `application.properties` file in `/src/main/resources` and add the following to it:
+   ```properties
+   logging.level.org.springframework.web=DEBUG
+   spring.application.name=GooglePlacesAPI
+   google.places.api.key=[YOUR-GOOGLE-PLACES-API-KEY]
+   ```
 
 ### Running
-2. Run the program and use the Swagger UI to interact with the API:
-   http://localhost:8080/swagger-ui/index.html#/
+Run the program `/src/main/java/com/example/GooglePlacesAPI/GooglePlacesAPIApplication.java` and use the [Swagger UI](http://localhost:8080/swagger-ui/index.html#/) to interact with the API:
 
 ### Using
-3. Example request:
+Example request:
 
     GET /hotel: finds hotel near given landmark
+
+### Test Framework
+To run the tests, run `src/test/java/com/example/GooglePlacesAPI/TestRunner.java`. A cucumber test report will be generated in the parent folder of the repository.
