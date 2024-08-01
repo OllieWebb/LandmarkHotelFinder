@@ -1,0 +1,51 @@
+name: Build with Maven and run tests, merge if passed
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 22
+        uses: actions/setup-java@v4
+        with:
+          java-version: "22"
+          distribution: "adopt"
+
+      - name: Create application.properties file
+        run: |
+          mkdir -p src/main/resources
+          echo "logging.level.org.springframework.web=DEBUG" > src/main/resources/application.properties
+          echo "spring.application.name=GooglePlacesAPI" >> src/main/resources/application.properties
+          echo "google.places.api.key=${{ secrets.X_GOOG_API_KEY }}" >> src/main/resources/application.properties
+
+      - name: Verify application.properties
+        run: cat src/main/resources/application.properties
+
+      - name: Build without tests
+        run: mvn -B clean install -DskipTests
+
+      - name: List all files in JAR
+        run: jar -tf target/*.jar
+
+      - name: Start GooglePlacesApiApplication
+        run: nohup java -jar target/*.jar &
+
+      - name: Wait for application to start
+        run: |
+          echo "Waiting for application to start..."
+          sleep 60 # Adjust the sleep duration based on your application's startup time
+
+      - name: Run tests with Maven
+        run: mvn -B verify
+
+      - name: Stop GooglePlacesApiApplication
+        run: pkill -f 'java -jar target/*.jar'
