@@ -20,9 +20,6 @@ jobs:
           java-version: "22"
           distribution: "adopt"
 
-      - name: Build without tests
-        run: mvn -B clean install -DskipTests
-
       - name: Create application.properties file
         run: |
           mkdir -p src/main/resources
@@ -33,8 +30,11 @@ jobs:
       - name: Verify application.properties
         run: cat src/main/resources/application.properties
 
-      - name: Verify application.properties in JAR
-        run: jar -tf target/*.jar | grep application.properties
+      - name: Build without tests
+        run: mvn -B clean install -DskipTests
+
+      - name: List all files in JAR
+        run: jar -tf target/*.jar
 
       - name: Start GooglePlacesApiApplication
         run: nohup java -jar target/*.jar &
