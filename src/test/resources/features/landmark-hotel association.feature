@@ -10,8 +10,8 @@ Feature: Nearby Hotels API
   Scenario: No hotels within the specified radius
     Given the endpoint "/hotel"
     When I request hotels near "Mount Everest" within a 500 meter radius
-    Then I should receive an empty list
-    And the response should have a status code of 200
+    Then I should receive an error message indicating that no results were found
+    And the response should have a status code of 404
 
   Scenario: Invalid landmark name
     Given the endpoint "/hotel"
@@ -28,8 +28,8 @@ Feature: Nearby Hotels API
   Scenario: Valid request with zero hotels
     Given the endpoint "/hotel"
     When I request hotels near "Sahara Desert" within a 1000 meter radius
-    Then I should receive an empty list
-    And the response should have a status code of 200
+    Then I should receive an error message indicating that no results were found
+    And the response should have a status code of 404
 
   Scenario: Large radius returning many hotels
     Given the endpoint "/hotel"
@@ -55,5 +55,5 @@ Feature: Nearby Hotels API
   Scenario: Landmark with no hotels but valid name
     Given the endpoint "/hotel"
     When I request hotels near "Great Sphinx of Giza" within a 100 meter radius
-    Then I should receive an empty list
-    And the response should have a status code of 200
+    Then I should receive an error message indicating that no results were found
+    And the response should have a status code of 404

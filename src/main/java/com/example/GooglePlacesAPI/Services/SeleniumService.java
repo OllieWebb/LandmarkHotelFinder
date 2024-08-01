@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 @Service
 public class SeleniumService {
 
@@ -29,7 +30,7 @@ public class SeleniumService {
         } else if (os.contains("mac")) {
             driverPath = "src/main/resources/chromedriver-mac-x64/chromedriver";
         } else {
-            driverPath = "src/main/resources/chromedriver";
+            driverPath = "src/main/resources/chromedriver-linux64/chromedriver";
         }
 
         // Set the path to the ChromeDriver executable
@@ -37,7 +38,13 @@ public class SeleniumService {
     }
 
     public Map<String, Boolean> getHotelAvailability(String hotelName, String checkInDate, String checkOutDate) {
-        WebDriver driver = new ChromeDriver();
+        // Set up ChromeOptions for headless mode
+        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless"); // Run in headless mode
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options); // Pass options to ChromeDriver
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         Map<String, Boolean> availabilityMap = new HashMap<>();
         try {

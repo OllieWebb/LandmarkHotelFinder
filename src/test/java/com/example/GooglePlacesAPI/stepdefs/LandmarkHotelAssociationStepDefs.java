@@ -89,4 +89,9 @@ public class LandmarkHotelAssociationStepDefs {
     public void iShouldReceiveAnErrorMessageIndicatingMissingParameters() {
         assertThat(sharedState.response.getBody().asString().toLowerCase(),containsString("the radius is invalid. it has to be a positive number, try again."));
     }
+
+    @Then("I should receive an error message indicating that no results were found")
+    public void iShouldReceiveAnErrorMessageIndicatingThatNoResultsWereFound() {
+        assertThat(sharedState.response.getBody().asString(),is("No results found using current search requirements"));
+    }
 }
